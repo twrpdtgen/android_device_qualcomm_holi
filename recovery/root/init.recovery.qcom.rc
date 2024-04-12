@@ -30,7 +30,7 @@ import /init.recovery.qcom_decrypt.rc
 on boot
     start health-hal-2-1
 
-service hal_cryptoeng_oplus /system/bin/hw/vendor.oplus.hardware.cryptoeng@1.0-service
+service hal_cryptoeng_oplus /system/bin/vendor.oplus.hardware.cryptoeng@1.0-service
     class late_start
     user system
     group system input sdcard_rw sdcard_r
