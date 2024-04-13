@@ -79,9 +79,12 @@ on property:twrp.modules.loaded=true
 
 on property:ro.boot.usbcontroller=*
     setprop sys.usb.controller ${ro.boot.usbcontroller}
+
 on fs
-    wait /dev/block/platform/soc/${ro.boot.bootdevice}
-    symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
+# Symlink for SDHCI
+symlink /dev/block/platform/soc/4784000.sdhci /dev/block/bootdevice
+# Symlink for UFSHC
+symlink /dev/block/platform/soc/4804000.ufshc /dev/block/bootdevice
     # Mount firmware
     mkdir /firmware
     mount vfat /dev/block/bootdevice/by-name/modem${ro.boot.slot_suffix} /firmware ro
