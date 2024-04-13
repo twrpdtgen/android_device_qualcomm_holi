@@ -7,9 +7,6 @@
 
 DEVICE_PATH := device/qualcomm/holi
 
-# Configure base.mk
-$(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
-
 # Configure twrp
 $(call inherit-product, vendor/twrp/config/common.mk)
 
