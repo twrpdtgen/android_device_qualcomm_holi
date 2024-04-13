@@ -64,10 +64,6 @@ on property:ro.boot.usbcontroller=*
 
     on boot
     setprop sys.usb.config adb
-    chmod 0777 /system/bin/oplus_update_preopt_script
-    start oplus_update_preopt_script
-    chmod 0777 /system/bin/oplusotapreopt_script
-    start oplusotapreopt_script
 
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
@@ -76,7 +72,7 @@ on fs
     mkdir /firmware
     mount vfat /dev/block/bootdevice/by-name/modem${ro.boot.slot_suffix} /firmware ro
 
-     # This must be under on fs, otherwise oplus_update_preopt_script wont map the partitions and exit installation
+ # This must be under on fs, otherwise oplus_update_preopt_script wont map the partitions and exit installation
     symlink /dev/block/bootdevice/by-name/mdm_oem_stanvbk /dev/block/bootdevice/by-name/multiimgoem_a
     symlink /dev/block/bootdevice/by-name/mdm_oem_stanvbk /dev/block/bootdevice/by-name/multiimgoem_b
     symlink /dev/block/bootdevice/by-name/mdm_oem_dycnvbk /dev/block/bootdevice/by-name/uefisecapp_a
