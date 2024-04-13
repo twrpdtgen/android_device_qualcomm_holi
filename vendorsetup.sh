@@ -12,7 +12,7 @@ export LC_ALL="C"
 	
 echo "General Configurations"
 export OF_MAINTAINER="IamAzmathullaShaikh"
-export FOX_BUILD_TYPE="Stable"
+export FOX_BUILD_TYPE="Beta"
 export FOX_VERSION="R12.1_1"
 export FOX_VARIANT="AOSP"
 
@@ -28,7 +28,6 @@ export FOX_USE_XZ_UTILS=1
 export_build_vars(){
 	echo -e "${GREEN}Exporting build vars from the holi tree${RESET}"
         #Important Build Flags
-        export FOX_VANILLA_BUILD=1
 	export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER=1
 	export FOX_DELETE_AROMAFM=1
 	export OF_CLOCK_POS=1
