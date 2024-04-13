@@ -28,7 +28,8 @@ PRODUCT_SOONG_NAMESPACES += \
 
 # Copy modules for depmod
 PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*.ko,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib/modules)
-PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*.so,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/hw)
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*-qti,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/hw)
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*-service,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/hw)
 
 
 # Release name
