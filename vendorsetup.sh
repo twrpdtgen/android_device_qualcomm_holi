@@ -11,7 +11,6 @@ export ALLOW_MISSING_DEPENDENCIES=true
 export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER="1"
 export LC_ALL="C"
 export TARGET_DEVICE_ALT="holi"
-export FOX_TARGET_DEVICES="holi"
 
 # Use magisk boot for patching
 export OF_USE_MAGISKBOOT=1
