@@ -36,29 +36,11 @@ service hal_cryptoeng_oplus /system/bin/hw/vendor.oplus.hardware.cryptoeng@1.0-s
     group system input sdcard_rw sdcard_r
     seclabel u:r:recovery:s0
 
-service hal_gatekeeper /system/bin/hw/android.hardware.gatekeeper@1.0-service.qti
-    class late_start
-    user system
-    group system input sdcard_rw sdcard_r
-    seclabel u:r:recovery:s0
-
-service hal_keymaster /system/bin/hw/android.hardware.keymaster@4.0-service.qti
-    class late_start
-    user system
-    group system input sdcard_rw sdcard_r
-    seclabel u:r:recovery:s0
-
-service hal_keymaster /system/bin/hw/android.hardware.keymaster@4.1-service.qti
-    class late_start
-    user system
-    group system input sdcard_rw sdcard_r
-    seclabel u:r:recovery:s0
-
 on init
     write /sys/class/backlight/panel0-backlight/brightness 200
     start boot-hal-1-1
     setprop sys.usb.config adb
-    setprop prepdecrypt.setpatch true
+    setprop prepdecrypt.setpatch false
     setprop prepdecrypt.loglevel 2
     # Create location for fs_mgr to store abbreviated output from filesystem
     # checker programs.
@@ -70,21 +52,35 @@ on boot
 on property:twrp.modules.loaded=true
     # Load ADSP firmware for PMIC
     wait /sys/kernel/boot_adsp/boot
-    write /sys/kernel/boot_adsp/boot 1
+    write /sys/kernel/boot_cdsp/boot 1
     wait /sys/class/power_supply/battery
 
 # Set fscklog permission
-    chown root system /dev/fscklogs/log
-    chmod 0770 /dev/fscklogs/log
+    chown root system /dev/fscklogs/fsck
+    chmod 0770 /dev/fscklogs/fsck
 
 on property:ro.boot.usbcontroller=*
     setprop sys.usb.controller ${ro.boot.usbcontroller}
 
+    on boot
+    setprop sys.usb.config adb
+    chmod 0777 /system/bin/oplus_update_preopt_script
+    start oplus_update_preopt_script
+    chmod 0777 /system/bin/oplusotapreopt_script
+    start oplusotapreopt_script
+
 on fs
-# Symlink for SDHCI
-symlink /dev/block/platform/soc/4784000.sdhci /dev/block/bootdevice
-# Symlink for UFSHC
-symlink /dev/block/platform/soc/4804000.ufshc /dev/block/bootdevice
+    wait /dev/block/platform/soc/${ro.boot.bootdevice}
+    symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
     # Mount firmware
     mkdir /firmware
     mount vfat /dev/block/bootdevice/by-name/modem${ro.boot.slot_suffix} /firmware ro
+
+     # This must be under on fs, otherwise oplus_update_preopt_script wont map the partitions and exit installation
+    symlink /dev/block/bootdevice/by-name/mdm_oem_stanvbk /dev/block/bootdevice/by-name/multiimgoem_a
+    symlink /dev/block/bootdevice/by-name/mdm_oem_stanvbk /dev/block/bootdevice/by-name/multiimgoem_b
+    symlink /dev/block/bootdevice/by-name/mdm_oem_dycnvbk /dev/block/bootdevice/by-name/uefisecapp_a
+    symlink /dev/block/bootdevice/by-name/mdm_oem_dycnvbk /dev/block/bootdevice/by-name/uefisecapp_b
+    symlink /dev/block/bootdevice/by-name/spunvm /dev/block/bootdevice/by-name/featenabler_a 
+    symlink /dev/block/bootdevice/by-name/spunvm /dev/block/bootdevice/by-name/featenabler_b
+    

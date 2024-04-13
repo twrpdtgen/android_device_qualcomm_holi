@@ -10,12 +10,6 @@ DEVICE_PATH := device/qualcomm/holi
 # Configure base.mk
 $(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
 
-# Configure core_64_bit_only.mk
-$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
-
-# Configure gsi_keys.mk
-$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
-
 # Configure twrp
 $(call inherit-product, vendor/twrp/config/common.mk)
 
@@ -28,9 +22,9 @@ PRODUCT_SOONG_NAMESPACES += \
 
 # Copy modules for depmod
 PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*.ko,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib/modules)
-PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*-qti,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/hw)
-PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*-service,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/hw)
-
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*-qti,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/system/bin)
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*-service,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/system/bin)
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware)
 
 # Release name
 PRODUCT_RELEASE_NAME := holi

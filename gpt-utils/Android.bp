@@ -14,28 +14,8 @@
 // limitations under the License.
 //
 
-
 cc_library {
-    name: "libgptutils.holi",
-    vendor: true,
-    recovery_available: true,
-    shared_libs: [
-        "libcutils",
-        "liblog",
-        "libz",
-    ],
-    cflags: [
-        "-Wall",
-        "-Werror",
-        "-Wno-unused-parameter",
-    ],
-    srcs: [
-        "gpt-utils.cpp",
-        "recovery-ufs-bsg.cpp",
-    ],
-    owner: "qti",
-    header_libs: [
-        "device_kernel_headers",
-    ],
-    export_include_dirs: ["."],
+    name: "libgptutils",
+    defaults: ["libgptutils_defaults"],
+    vendor_available: true,
 }

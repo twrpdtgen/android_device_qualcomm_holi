@@ -20,6 +20,12 @@
 # limitations under the License.
 #
 
+# Inherit from common AOSP config
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
+
+# Inherit from the common Open Source product configuration
+$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
+
 PRODUCT_PACKAGES += \
     bootctrl.holi.recovery \
     android.hardware.boot@1.2-impl \
@@ -39,10 +45,21 @@ AB_OTA_POSTINSTALL_CONFIG += \
     FILESYSTEM_TYPE_system=ext4 \
     POSTINSTALL_OPTIONAL_system=true
 
+AB_OTA_POSTINSTALL_CONFIG += \
+    RUN_POSTINSTALL_vendor=true \
+    POSTINSTALL_PATH_vendor=bin/checkpoint_gc \
+    FILESYSTEM_TYPE_vendor=ext4 \
+    POSTINSTALL_OPTIONAL_vendor=true
+
+# Userdata Checkpointing OTA GC
+PRODUCT_PACKAGES += \
+    checkpoint_gc
+
 # fastbootd
 PRODUCT_PACKAGES += \
     android.hardware.fastboot@1.0-impl-mock \
-    fastbootd    
+    fastbootd \
+    resetprop    
 
 # qcom decryption
 PRODUCT_PACKAGES_ENG += \
@@ -70,4 +87,3 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.crypto.dm_default_key.options_format.version=2
 
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
-BUILD_BROKEN_MISSING_REQUIRED_MODULES := true
