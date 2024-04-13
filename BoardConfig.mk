@@ -188,6 +188,3 @@ RECOVERY_LIBRARY_SOURCE_FILES += \
     $(TARGET_OUT_SHARED_LIBRARIES)/libion.so
 TW_LOAD_VENDOR_MODULES := "adsp_loader_dlkm.ko apr_dlkm.ko q6_notifier_dlkm.ko q6_pdr_dlkm.ko snd_event_dlkm.ko"    
 TW_BACKUP_EXCLUSIONS := /data/fonts
-
-# Inherit the proprietary files
-include vendor/qualcomm/holi/BoardConfigVendor.mk
