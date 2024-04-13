@@ -7,6 +7,15 @@
 
 DEVICE_PATH := device/qualcomm/holi
 
+# Configure base.mk
+$(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
+
+# Inherit from common AOSP config
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
+
+# Inherit from the common Open Source product configuration
+$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
+
 # Configure twrp
 $(call inherit-product, vendor/twrp/config/common.mk)
 
