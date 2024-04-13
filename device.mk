@@ -20,15 +20,6 @@
 # limitations under the License.
 #
 
-# Configure base.mk
-$(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
-
-# Inherit from common AOSP config
-$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
-
-# Inherit from the common Open Source product configuration
-$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
-
 PRODUCT_PACKAGES += \
     bootctrl.holi.recovery \
     android.hardware.boot@1.2-impl \
