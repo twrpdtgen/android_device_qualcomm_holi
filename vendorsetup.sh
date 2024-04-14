@@ -3,7 +3,7 @@ export TARGET_ARCH="arm64-v8a"
 # Some about us
 export FOX_VARIANT="FBE"
 export FOX_VERSION="R12.1"
-export OF_MAINTAINER=IamAzmathullaShaikh
+export OF_MAINTAINER="IamAzmathullaShaikh"
 
 # Build environment stuffs
 export FOX_BUILD_DEVICE="holi"
