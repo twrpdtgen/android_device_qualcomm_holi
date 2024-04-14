@@ -7,115 +7,71 @@ COMMON_LUNCH_CHOICES := twrp_holi-eng
 
 FDEVICE1="holi"
 CURR_DEVICE="holi"
-SDCARD_BINS="false"
 
 RED_BACK="\e[101m"
 RED="\e[91m"
 RESET="\e[0m"
 GREEN="\e[92m"
 
+
 echo "Important Value"
 export ALLOW_MISSING_DEPENDENCIES=true
 export LC_ALL="C"
-	
+import /init.recovery.qcom_decrypt.rc	
+
 echo "General Configurations"
-export OF_MAINTAINER="IamAzmathullaShaikh"
-export FOX_BUILD_TYPE="BetaV3"
-export FOX_VERSION="R12.1_40"
-export FOX_VARIANT="AOSP"
+export OF_MAINTAINER=IamAzmathullaShaikh
+export FOX_BUILD_TYPE=Testv1.0
+export FOX_VERSION="R12.1_1"
 
 # Binaries & Tools
-export FOX_CUSTOM_BINS_TO_SDCARD=3
-#export FOX_USE_NANO_EDITOR=1
-#export FOX_REPLACE_BUSYBOX_PS=1
-#export FOX_USE_SED_BINARY=1
-#export FOX_USE_TAR_BINARY=1
-#export FOX_USE_UNZIP_BINARY=1
-#export FOX_USE_XZ_UTILS=1
-
-# Check if FOX_CUSTOM_BINS_TO_SDCARD is set to 3
-if [ "$FOX_CUSTOM_BINS_TO_SDCARD" = "1" ] || [ "$FOX_CUSTOM_BINS_TO_SDCARD" = "2" ] || [ "$FOX_CUSTOM_BINS_TO_SDCARD" = "3" ]; then
-    # Enable necessary options
-    export FOX_USE_NANO_EDITOR=1
-    export FOX_REPLACE_BUSYBOX_PS=1
-    export FOX_USE_SED_BINARY=1
-    export FOX_USE_TAR_BINARY=1
-    export FOX_USE_UNZIP_BINARY=1
-    export FOX_USE_XZ_UTILS=1
-
-    # Check which specific option got enabled
-    if [ "$FOX_USE_NANO_EDITOR" = "1" ]; then
-        # Enable FOX_CUSTOM_BINS_TO_SDCARD and the specific option together
-        export FOX_CUSTOM_BINS_TO_SDCARD=3
-    elif [ "$FOX_REPLACE_BUSYBOX_PS" = "1" ]; then
-        export FOX_CUSTOM_BINS_TO_SDCARD=3
-    elif [ "$FOX_USE_SED_BINARY" = "1" ]; then
-        export FOX_CUSTOM_BINS_TO_SDCARD=3
-    elif [ "$FOX_USE_TAR_BINARY" = "1" ]; then
-        export FOX_CUSTOM_BINS_TO_SDCARD=3
-    elif [ "$FOX_USE_UNZIP_BINARY" = "1" ]; then
-        export FOX_CUSTOM_BINS_TO_SDCARD=3
-    elif [ "$FOX_USE_XZ_UTILS" = "1" ]; then
-        export FOX_CUSTOM_BINS_TO_SDCARD=3
-    fi
-fi
-
-echo "Target Device"
-export TARGET_DEVICE_ALT="holi, cph2467, larry, qualcomm"
-export FOX_BUILD_DEVICE="holi"
+#export FOX_CUSTOM_BINS_TO_SDCARD=3
+export FOX_USE_NANO_EDITOR=1
+export FOX_REPLACE_BUSYBOX_PS=1
+export FOX_USE_SED_BINARY=1
+export FOX_USE_TAR_BINARY=1
+export FOX_USE_UNZIP_BINARY=1
+export FOX_USE_XZ_UTILS=1
+export FOX_REPLACE_TOOLBOX_GETPROP=1
 	
 export_build_vars(){
 	echo -e "${GREEN}Exporting build vars from the holi tree${RESET}"
         #Important Build Flags
-        export FOX_VANILLA_BUILD=1
+        export FOX_RECOVERY_SYSTEM_PARTITION=/dev/block/mapper/system_b
+        export FOX_RECOVERY_VENDOR_PARTITION=/dev/block/mapper/vendor_b
 	export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER=1
 	export FOX_DELETE_AROMAFM=1
 	export OF_CLOCK_POS=1
         export OF_CHECK_OVERWRITE_ATTEMPTS=1
+	export OF_QUICK_BACKUP_LIST=/system_root;/vendor;/data;/boot;/recovery
 	export OF_STATUS_INDENT_RIGHT=48
 	export OF_STATUS_INDENT_LEFT=48
-	export OF_WIPE_METADATA_AFTER_DATAFORMAT=1
 	export OF_OPTIONS_LIST_NUM=8
-	#export FOX_DELETE_INITD_ADDON=1 # !- Causes bootloops sometimes -!
+	export FOX_DELETE_INITD_ADDON=1 # !- Causes bootloops sometimes -!
 	export FOX_ENABLE_APP_MANAGER=1
-	export OF_USE_qualcomm_HAPTICS=1
-        export OF_USE_SYSTEM_FINGERPRINT=0
-	export FOX_USE_SPECIFIC_MAGISK_ZIP="$PWD/device/qualcomm/holi/prebuilt/magisk/magdelta.zip"
-	
-	# Security Configurations
-	export OF_ADVANCED_SECURITY=1
-	export OF_FORCE_DISABLE_DM_VERITY=0
-	export OF_DISABLE_FORCED_ENCRYPTION=0
+        
 	
 	# Tools and Utilities Configurations
-	export OF_USE_LZMA_COMPRESSION=1
+	export OF_OTA_BACKUP_STOCK_BOOT_IMAGE=1
+	export OF_USE_LZ4_COMPRESSION=1
 	export OF_ENABLE_FS_COMPRESSION=1
-	export FOX_RECOVERY_VENDOR_PARTITION="/dev/block/mapper/vendor"
-	export FOX_RECOVERY_SYSTEM_PARTITION="/dev/block/mapper/system"
 	export OF_HIDE_NOTCH=1
 	
 	# Specific Features Configurations
-	export OF_NO_TREBLE_COMPATIBILITY_CHECK=0
-  export OF_ENABLE_LPTOOLS=1
-	export OF_PATCH_AVB20=1
+        export OF_DONT_PATCH_ON_FRESH_INSTALLATION=1
+        export OF_SKIP_ORANGEFOX_PROCESS=1
+        export FOX_USE_SPECIFIC_MAGISK_ZIP=~/Magisk/Magisk_kitsune-canary.zip
+        export OF_ENABLE_LPTOOLS=1
+	export FOX_AB_DEVICE=1
 	export OF_SUPPORT_VBMETA_AVB2_PATCHING=1
 	export OF_SCREEN_H=2400
-  export OF_NO_SPLASH_CHANGE=1
-
-	# File Paths Configurations
-	export OF_FLASHLIGHT_ENABLE=0
-	
-	# maximum permissible splash image size
-	# (in kilobytes); do *NOT* increase!
-	export OF_SPLASH_MAX_SIZE=128
- 
-	# let's see what are our build VARs
-	if [ -n "$FOX_BUILD_LOG_FILE" -a -f "$FOX_BUILD_LOG_FILE" ]; then
-	  export | grep "FOX" >> $FOX_BUILD_LOG_FILE
-	  export | grep "OF_" >> $FOX_BUILD_LOG_FILE
-	  export | grep "TARGET_" >> $FOX_BUILD_LOG_FILE
-	  export | grep "TW_" >> $FOX_BUILD_LOG_FILE
-	fi
+        export OF_NO_SPLASH_CHANGE=1
+        export OF_REPORT_HARMLESS_MOUNT_ISSUES=1
+        export OF_SKIP_DECRYPTED_ADOPTED_STORAGE=1
+        export OF_FL_PATH1=/sys/firmware/devicetree/base/soc/pinctrl@4
+        export OF_FL_PATH2=/sys/module/camera/drivers/i2c:i2c_flash
+        export OF_FORCE_PREBUILT_KERNEL=1
+        export OF_DEFAULT_KEYMASTER_VERSION=4.1
 }
 
 set_env_var(){
