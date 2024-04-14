@@ -125,6 +125,7 @@ BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_COPY_OUT_VENDOR := vendor
 
 # Recovery
+TARGET_RECOVERY_INITRC := $(DEVICE_PATH)/recovery/root/init.recovery.qcom.rc
 BOARD_HAS_LARGE_FILESYSTEM := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
@@ -133,6 +134,7 @@ TARGET_RECOVERY_DEVICE_MODULES += \
     bootctrl.$(TARGET_BOARD_PLATFORM).recovery \
     libion
 ALLOW_MISSING_DEPENDENCIES := true
+TW_HAS_NO_RECOVERY_PARTITION := true
 
 # Partitions (listed in the file) to be wiped under recovery.
 TARGET_RECOVERY_WIPE := $(DEVICE_PATH)/recovery.wipe
@@ -161,6 +163,8 @@ TW_INCLUDE_RESETPROP := 1
 TW_FRAMERATE := 60
 			     
 # TWRP specific build flags
+TW_DEFAULT_LANGUAGE := en-US
+TW_EXCLUDE_ENCRYPTED_BACKUPS := true
 TW_DEVICE_VERSION := Nord-CE3Lite
 TW_SCREEN_WIDTH := 720
 TW_SCREEN_HEIGHT :=1600
@@ -169,7 +173,6 @@ RECOVERY_SDCARD_ON_DATA := true
 TARGET_RECOVERY_QCOM_RTC_FIX := true
 TW_EXCLUDE_DEFAULT_USB_INIT := true
 TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file
-TW_EXTRA_LANGUAGES := true
 TW_INCLUDE_NTFS_3G := true
 TW_USE_TOOLBOX := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
@@ -190,5 +193,3 @@ RECOVERY_LIBRARY_SOURCE_FILES += \
     $(TARGET_OUT_SHARED_LIBRARIES)/libion.so
 TW_LOAD_VENDOR_MODULES := "adsp_loader_dlkm.ko apr_dlkm.ko q6_notifier_dlkm.ko q6_pdr_dlkm.ko snd_event_dlkm.ko"    
 TW_BACKUP_EXCLUSIONS := /data/fonts
-
-
