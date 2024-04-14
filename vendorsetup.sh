@@ -1,7 +1,7 @@
 export TARGET_ARCH="arm64-v8a"
 
 # Some about us
-#export FOX_VARIANT="A12"
+export FOX_VARIANT="FBE"
 export FOX_VERSION="R12.1"
 export OF_MAINTAINER=IamAzmathullaShaikh
 
@@ -12,13 +12,9 @@ export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER="1"
 export LC_ALL="C"
 export TARGET_DEVICE_ALT="holi"
 
-# Use magisk boot for patching
-export OF_USE_MAGISKBOOT=1
-export OF_USE_MAGISKBOOT_FOR_ALL_PATCHES=1
-export OF_DONT_PATCH_ENCRYPTED_DEVICE=1
-
 # We have a/b partitions
-export FOX_AB_DEVICE=1
+export FOX_VIRTUAL_AB_DEVICE="1"
+export OF_DYNAMIC_FULL_SIZE="1"
 
 # Screen specifications
 export OF_SCREEN_H=2400
@@ -30,35 +26,25 @@ export OF_ALLOW_DISABLE_NAVBAR=0
 export OF_CLOCK_POS=0
 
 # Device stuff
-export OF_KEEP_FORCED_ENCRYPTION="1"
 export OF_NO_TREBLE_COMPATIBILITY_CHECK="1"
-export OF_FBE_METADATA_MOUNT_IGNORE=1
-export OF_PATCH_AVB20=1
-
-# Run a process after formatting data to work-around MTP issues
-export OF_RUN_POST_FORMAT_PROCESS=1
+export OF_SKIP_FBE_DECRYPTION=1
+export FOX_PATCH_VBMETA_FLAG=1
+export OF_FBE_METADATA_MOUNT_IGNORE="1"
+export OF_IGNORE_LOGICAL_MOUNT_ERRORS="1"
+export OF_SUPPORT_VBMETA_AVB2_PATCHING="1"
 
 # OTA for custom ROMs
 export OF_SUPPORT_ALL_PAYLOAD_OTA_UPDATES=1
 export OF_SUPPORT_ALL_BLOCK_OTA_UPDATES=1
 export OF_FIX_OTA_UPDATE_MANUAL_FLASH_ERROR=1
-
-# OTA
-export OF_SUPPORT_ALL_BLOCK_OTA_UPDATES=1
-export OF_FIX_OTA_UPDATE_MANUAL_FLASH_ERROR=1
-export OF_DISABLE_MIUI_OTA_BY_DEFAULT=1
-export OF_SUPPORT_ALL_BLOCK_OTA_UPDATES=0
-export OF_DISABLE_MIUI_SPECIFIC_FEATURES=1
+export OF_DISABLE_MIUI_OTA_BY_DEFAULT="1"
 
 # -- add settings for R12.1 --
 export OF_QUICK_BACKUP_LIST="/boot;/data;/super;/system;/odm;/vendor"
+export OF_USE_LOCKSCREEN_BUTTON="1"
 
 # ensure that /sdcard is bind-unmounted before f2fs data repair or format (required for FBE v1)
 export OF_UNBIND_SDCARD_F2FS=1
-
-
-# -- add settings for Android 12 --
-# export OF_FIX_DECRYPTION_ON_DATA_MEDIA="1"
 
 # Add some extras
 export FOX_USE_ZIP_BINARY="1"
@@ -66,7 +52,16 @@ export FOX_USE_TAR_BINARY="1"
 export FOX_ASH_IS_BASH="1"
 export FOX_REPLACE_BUSYBOX_PS="1"
 export FOX_USE_BASH_SHELL="1"
-export FOX_USE_LZMA_COMPRESSION="1"
+export OF_USE_LZMA_COMPRESSION=1
 export FOX_USE_NANO_EDITOR="1"
-export OF_DONT_KEEP_LOG_HISTORY="1"
 export OF_NO_SPLASH_CHANGE="1"
+export OF_ADVANCED_SECURITY="1"
+export OF_REPORT_HARMLESS_MOUNT_ISSUES="1"
+export OF_NO_ADDITIONAL_MIUI_PROPS_CHECK="1"
+export OF_DEFAULT_TIMEZONE="GMT+5:30"
+export OF_LOOP_DEVICE_ERRORS_TO_LOG="1"
+export FOX_USE_DATA_RECOVERY_FOR_SETTINGS="1"
+export OF_DISPLAY_FORMAT_FILESYSTEMS_DEBUG_INFO="1"
+export FOX_SETTINGS_ROOT_DIRECTORY="/sdcard1/OrangeFox"
+export FOX_BASH_TO_SYSTEM_BIN="1"
+#export FOX_VENDOR_BOOT_RECOVERY="1"
