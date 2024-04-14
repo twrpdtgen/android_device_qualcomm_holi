@@ -1,58 +1,151 @@
-export TARGET_ARCH="arm64-v8a"
+# Mkbootimage
+sudo apt install nano
+git clone https://gitlab.com/EdwinT2/avb_tool -b main out/host/linux-x86/bin
+sudo chmod +rwx out/host/linux-x86/bin/avbtool
+chmod a+x device/samsung/a12s/prebuilt/avb/mkbootimg
+COMMON_LUNCH_CHOICES := twrp_a12s-eng
 
-# Some about us
-export FOX_VARIANT="FBE"
-export FOX_VERSION="R12.1"
-export OF_MAINTAINER="IamAzmathullaShaikh"
+FDEVICE1="a12s"
+CURR_DEVICE="a12s"
+SDCARD_BINS="false"
 
-# Build environment stuffs
-export FOX_BUILD_DEVICE="holi"
+RED_BACK="\e[101m"
+RED="\e[91m"
+RESET="\e[0m"
+GREEN="\e[92m"
+
+echo "Important Value"
 export ALLOW_MISSING_DEPENDENCIES=true
-export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER="1"
 export LC_ALL="C"
-export TARGET_DEVICE_ALT="holi"
+	
+echo "General Configurations"
+export OF_MAINTAINER="TheDarkDeath788"
+export FOX_BUILD_TYPE="Stable"
+export FOX_VERSION="R12.1_40"
+export FOX_VARIANT="AOSP"
 
-# We have a/b partitions
-export FOX_VIRTUAL_AB_DEVICE="1"
-export OF_DYNAMIC_FULL_SIZE="1"
+# Binaries & Tools
+export FOX_CUSTOM_BINS_TO_SDCARD=3
+#export FOX_USE_NANO_EDITOR=1
+#export FOX_REPLACE_BUSYBOX_PS=1
+#export FOX_USE_SED_BINARY=1
+#export FOX_USE_TAR_BINARY=1
+#export FOX_USE_UNZIP_BINARY=1
+#export FOX_USE_XZ_UTILS=1
 
-# Screen specifications
-export OF_SCREEN_H=2400
-export OF_SCREEN_W=1080
-#export OF_STATUS_H=100
-export OF_STATUS_INDENT_LEFT=48
-export OF_STATUS_INDENT_RIGHT=48
-export OF_ALLOW_DISABLE_NAVBAR=0
-export OF_CLOCK_POS=0
+# Check if FOX_CUSTOM_BINS_TO_SDCARD is set to 3
+if [ "$FOX_CUSTOM_BINS_TO_SDCARD" = "1" ] || [ "$FOX_CUSTOM_BINS_TO_SDCARD" = "2" ] || [ "$FOX_CUSTOM_BINS_TO_SDCARD" = "3" ]; then
+    # Enable necessary options
+    export FOX_USE_NANO_EDITOR=1
+    export FOX_REPLACE_BUSYBOX_PS=1
+    export FOX_USE_SED_BINARY=1
+    export FOX_USE_TAR_BINARY=1
+    export FOX_USE_UNZIP_BINARY=1
+    export FOX_USE_XZ_UTILS=1
 
-# Device stuff
-export OF_NO_TREBLE_COMPATIBILITY_CHECK="1"
-export OF_SKIP_FBE_DECRYPTION=1
-export OF_FBE_METADATA_MOUNT_IGNORE="1"
-export OF_IGNORE_LOGICAL_MOUNT_ERRORS="1"
-export OF_SUPPORT_VBMETA_AVB2_PATCHING="1"
+    # Check which specific option got enabled
+    if [ "$FOX_USE_NANO_EDITOR" = "1" ]; then
+        # Enable FOX_CUSTOM_BINS_TO_SDCARD and the specific option together
+        export FOX_CUSTOM_BINS_TO_SDCARD=3
+    elif [ "$FOX_REPLACE_BUSYBOX_PS" = "1" ]; then
+        export FOX_CUSTOM_BINS_TO_SDCARD=3
+    elif [ "$FOX_USE_SED_BINARY" = "1" ]; then
+        export FOX_CUSTOM_BINS_TO_SDCARD=3
+    elif [ "$FOX_USE_TAR_BINARY" = "1" ]; then
+        export FOX_CUSTOM_BINS_TO_SDCARD=3
+    elif [ "$FOX_USE_UNZIP_BINARY" = "1" ]; then
+        export FOX_CUSTOM_BINS_TO_SDCARD=3
+    elif [ "$FOX_USE_XZ_UTILS" = "1" ]; then
+        export FOX_CUSTOM_BINS_TO_SDCARD=3
+    fi
+fi
 
-# OTA for custom ROMs
-export OF_DISABLE_MIUI_OTA_BY_DEFAULT="1"
+echo "Target Device"
+export FOX_TARGET_DEVICES="a12s, a12sub, SM-A127M, SM-A127F"
+export TARGET_DEVICE_ALT="a12s, a12sub, SM-A127M, SM-A127F"
+export FOX_BUILD_DEVICE="a12s"
+	
+export_build_vars(){
+	echo -e "${GREEN}Exporting build vars from the a12s tree${RESET}"
+        #Important Build Flags
+        export FOX_VANILLA_BUILD=1
+	export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER=1
+	export FOX_DELETE_AROMAFM=0
+	export OF_CLOCK_POS=1
+        export OF_CHECK_OVERWRITE_ATTEMPTS=1
+	export OF_STATUS_INDENT_RIGHT=48
+	export OF_STATUS_INDENT_LEFT=48
+	export OF_WIPE_METADATA_AFTER_DATAFORMAT=1
+	export OF_OPTIONS_LIST_NUM=8
+	export FOX_DELETE_INITD_ADDON=1 # !- Causes bootloops sometimes -!
+	export FOX_ENABLE_APP_MANAGER=1
+	export OF_USE_SAMSUNG_HAPTICS=1
+        export OF_USE_SYSTEM_FINGERPRINT=0
+	export FOX_USE_SPECIFIC_MAGISK_ZIP="$PWD/device/samsung/a12s/prebuilt/magisk/magdelta.zip"
+	
+	# Security Configurations
+	export OF_ADVANCED_SECURITY=1
+	export OF_FORCE_DISABLE_DM_VERITY=0
+	export OF_DISABLE_FORCED_ENCRYPTION=0
+	
+	# Tools and Utilities Configurations
+	export OF_USE_LZMA_COMPRESSION=1
+	export OF_ENABLE_FS_COMPRESSION=1
+	export FOX_RECOVERY_INSTALL_PARTITION="/dev/block/bootdevice/by-name/recovery"
+	export FOX_RECOVERY_VENDOR_PARTITION="/dev/block/mapper/vendor"
+	export FOX_RECOVERY_SYSTEM_PARTITION="/dev/block/mapper/system"
+	export OF_HIDE_NOTCH=1
+	
+	# Specific Features Configurations
+	export OF_NO_TREBLE_COMPATIBILITY_CHECK=0
+        export OF_ENABLE_LPTOOLS=1
+	export FOX_NO_SAMSUNG_SPECIAL=2
+	export OF_PATCH_AVB20=1
+	export OF_SUPPORT_VBMETA_AVB2_PATCHING=1
+	export OF_SCREEN_H=2400
+        export OF_NO_SPLASH_CHANGE=1
 
-# -- add settings for R12.1 --
-export OF_QUICK_BACKUP_LIST="/boot;/data;/super;/system;/odm;/vendor"
-export OF_USE_LOCKSCREEN_BUTTON="1"
+	# File Paths Configurations
+	export OF_FL_PATH1="/system/flashlight"
+	export OF_FL_PATH2=""
+	export OF_FLASHLIGHT_ENABLE=1
+	
+	# maximum permissible splash image size
+	# (in kilobytes); do *NOT* increase!
+	export OF_SPLASH_MAX_SIZE=128
+ 
+	# let's see what are our build VARs
+	if [ -n "$FOX_BUILD_LOG_FILE" -a -f "$FOX_BUILD_LOG_FILE" ]; then
+	  export | grep "FOX" >> $FOX_BUILD_LOG_FILE
+	  export | grep "OF_" >> $FOX_BUILD_LOG_FILE
+	  export | grep "TARGET_" >> $FOX_BUILD_LOG_FILE
+	  export | grep "TW_" >> $FOX_BUILD_LOG_FILE
+	fi
+}
 
-# Add some extras
-export FOX_USE_ZIP_BINARY="1"
-export FOX_USE_TAR_BINARY="1"
-export FOX_ASH_IS_BASH="1"
-export FOX_REPLACE_BUSYBOX_PS="1"
-export FOX_USE_BASH_SHELL="1"
-export OF_USE_LZMA_COMPRESSION=1
-export FOX_USE_NANO_EDITOR="1"
-export OF_NO_SPLASH_CHANGE="1"
-export OF_ADVANCED_SECURITY="1"
-export OF_REPORT_HARMLESS_MOUNT_ISSUES="1"
-export OF_NO_ADDITIONAL_MIUI_PROPS_CHECK="1"
-export OF_DEFAULT_TIMEZONE="GMT+5:30"
-export OF_LOOP_DEVICE_ERRORS_TO_LOG="1"
-export OF_DISPLAY_FORMAT_FILESYSTEMS_DEBUG_INFO="1"
-export FOX_BASH_TO_SYSTEM_BIN="1"
-# export FOX_VENDOR_BOOT_RECOVERY="1"
+set_env_var(){
+        echo -e "${RED_BACK}Environment Variable CURR_DEVICE not set... Aborting${RESET}"
+        echo "Set to the codename of the device you're building for"
+        echo -e "${GREEN}Example :${RESET}"
+        echo " export CURR_DEVICE=a12s"
+        exit 1
+}
+
+var_not_eq(){
+        echo -e "${RED_BACK}CURR_DEVICE not equal to holi${RESET}"
+        echo -e "${RED_BACK}CURR_DEVICE = $CURR_DEVICE${RESET}"
+        echo -e "${RED}If this is a mistake, then export CURR_DEVICE to the correct codename${RESET}"
+        echo -e "${RED}Skipping a12s specific build vars...${RESET}"
+}
+
+case "$CURR_DEVICE" in
+  "$FDEVICE1")
+    export_build_vars;
+    ;;
+  "")
+    set_env_var
+    ;;
+  *)
+    var_not_eq
+    ;;
+esac
