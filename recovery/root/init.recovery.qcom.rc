@@ -25,14 +25,58 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+import /init.recovery.qcom_decrypt.rc
+
+on boot
+    start health-hal-2-1
+
+service hal_cryptoeng_oplus /system/bin/hw/vendor.oplus.hardware.cryptoeng@1.0-service
+    class late_start
+    user system
+    group system input sdcard_rw sdcard_r
+    seclabel u:r:recovery:s0
+
 on init
     write /sys/class/backlight/panel0-backlight/brightness 200
-    setprop sys.usb.configfs 1
+    start boot-hal-1-1
+    setprop sys.usb.config adb
+    setprop prepdecrypt.setpatch false
+    setprop prepdecrypt.loglevel 2
+    # Create location for fs_mgr to store abbreviated output from filesystem
+    # checker programs.
+    mkdir /dev/fscklogs 0770 root system
+    
+on boot
+    setprop sys.usb.config mtp,adb
+    
+on property:twrp.modules.loaded=true
+    # Load ADSP firmware for PMIC
+    wait /sys/kernel/boot_adsp/boot
+    write /sys/kernel/boot_cdsp/boot 1
+    wait /sys/class/power_supply/battery
+
+# Set fscklog permission
+    chown root system /dev/fscklogs/fsck
+    chmod 0770 /dev/fscklogs/fsck
 
 on property:ro.boot.usbcontroller=*
     setprop sys.usb.controller ${ro.boot.usbcontroller}
-    write /sys/class/udc/${ro.boot.usbcontroller}/device/../mode peripheral
+
+    on boot
+    setprop sys.usb.config adb
 
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
+    # Mount firmware
+    mkdir /firmware
+    mount vfat /dev/block/bootdevice/by-name/modem${ro.boot.slot_suffix} /firmware ro
+
+ # This must be under on fs, otherwise oplus_update_preopt_script wont map the partitions and exit installation
+    symlink /dev/block/bootdevice/by-name/mdm_oem_stanvbk /dev/block/bootdevice/by-name/multiimgoem_a
+    symlink /dev/block/bootdevice/by-name/mdm_oem_stanvbk /dev/block/bootdevice/by-name/multiimgoem_b
+    symlink /dev/block/bootdevice/by-name/mdm_oem_dycnvbk /dev/block/bootdevice/by-name/uefisecapp_a
+    symlink /dev/block/bootdevice/by-name/mdm_oem_dycnvbk /dev/block/bootdevice/by-name/uefisecapp_b
+    symlink /dev/block/bootdevice/by-name/spunvm /dev/block/bootdevice/by-name/featenabler_a 
+    symlink /dev/block/bootdevice/by-name/spunvm /dev/block/bootdevice/by-name/featenabler_b
+    
