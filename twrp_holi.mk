@@ -25,7 +25,6 @@ PRODUCT_SOONG_NAMESPACES += \
 PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*.ko,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib/modules)
 PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*-qti,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/system/bin)
 PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*-service,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/system/bin)
-PRODUCT_COPY_DIR += $(DEVICE_PATH)/prebuilt$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware)
 
 # Release name
 PRODUCT_RELEASE_NAME := holi
