@@ -61,7 +61,6 @@ if [ "$FOX_CUSTOM_BINS_TO_SDCARD" = "1" ] || [ "$FOX_CUSTOM_BINS_TO_SDCARD" = "2
 fi
 
 echo "Target Device"
-export FOX_TARGET_DEVICES="holi, cph2467, larry, qualcomm"
 export TARGET_DEVICE_ALT="holi, cph2467, larry, qualcomm"
 export FOX_BUILD_DEVICE="holi"
 	
