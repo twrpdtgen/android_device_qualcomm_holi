@@ -34,17 +34,11 @@ export OF_IGNORE_LOGICAL_MOUNT_ERRORS="1"
 export OF_SUPPORT_VBMETA_AVB2_PATCHING="1"
 
 # OTA for custom ROMs
-export OF_SUPPORT_ALL_PAYLOAD_OTA_UPDATES=1
-export OF_SUPPORT_ALL_BLOCK_OTA_UPDATES=1
-export OF_FIX_OTA_UPDATE_MANUAL_FLASH_ERROR=1
 export OF_DISABLE_MIUI_OTA_BY_DEFAULT="1"
 
 # -- add settings for R12.1 --
 export OF_QUICK_BACKUP_LIST="/boot;/data;/super;/system;/odm;/vendor"
 export OF_USE_LOCKSCREEN_BUTTON="1"
-
-# ensure that /sdcard is bind-unmounted before f2fs data repair or format (required for FBE v1)
-export OF_UNBIND_SDCARD_F2FS=1
 
 # Add some extras
 export FOX_USE_ZIP_BINARY="1"
