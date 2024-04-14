@@ -134,7 +134,6 @@ TARGET_RECOVERY_DEVICE_MODULES += \
     bootctrl.$(TARGET_BOARD_PLATFORM).recovery \
     libion
 ALLOW_MISSING_DEPENDENCIES := true
-TW_HAS_NO_RECOVERY_PARTITION := true
 
 # Partitions (listed in the file) to be wiped under recovery.
 TARGET_RECOVERY_WIPE := $(DEVICE_PATH)/recovery.wipe
