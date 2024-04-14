@@ -7,24 +7,12 @@
 
 DEVICE_PATH := device/qualcomm/holi
 
-# Inherit from common AOSP config
-$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
-
-# Configure twrp
-$(call inherit-product, vendor/twrp/config/common.mk)
-
 # Inherit from holi device
 $(call inherit-product, $(DEVICE_PATH)/device.mk)
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
     $(DEVICE_PATH)
-
-# Copy modules for depmod
-PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*.ko,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib/modules)
-PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*-qti,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/system/bin)
-PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*-service,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/system/bin)
 
 # Release name
 PRODUCT_RELEASE_NAME := holi

@@ -20,6 +20,24 @@
 # limitations under the License.
 #
 
+# Configure base.mk
+$(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
+
+# Configure core_64_bit_only.mk
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
+
+# Configure gsi_keys.mk
+$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
+
+# Configure Virtual A/B
+$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
+
+# Configure SDCard replacement functionality
+$(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
+
+# Configure twrp
+$(call inherit-product, vendor/twrp/config/common.mk)
+
 PRODUCT_PACKAGES += \
     bootctrl.holi.recovery \
     android.hardware.boot@1.2-impl \
@@ -81,3 +99,18 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.crypto.dm_default_key.options_format.version=2
 
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
+
+# Copy modules for depmod
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*.ko,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib/modules)
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*-qti,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/system/bin)
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*-service,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/system/bin)
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*.ko,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware)
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*.b00,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware)
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*.b01,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware)
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*.b02,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware)
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*.b03,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware)
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*.b04,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware)
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*.b05,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware)
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*.b06,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware)
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*.b07,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware)
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*.mdt,$(DEVICE_PATH)/prebuilt,$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware)

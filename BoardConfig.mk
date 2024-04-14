@@ -125,10 +125,10 @@ BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_COPY_OUT_VENDOR := vendor
 
 # Recovery
-TARGET_RECOVERY_INITRC := $(DEVICE_PATH)/recovery/root/init.recovery.qcom.rc
 BOARD_HAS_LARGE_FILESYSTEM := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
+TARGET_RECOVERY_INITRC := $(DEVICE_PATH)/recovery/root/init.recovery.qcom.rc
 TARGET_RECOVERY_DEVICE_MODULES += \
     android.hidl.base@1.0 \
     bootctrl.$(TARGET_BOARD_PLATFORM).recovery \
@@ -156,7 +156,7 @@ TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
 
 # Tool
 TW_INCLUDE_REPACKTOOLS := true
-TW_INCLUDE_RESETPROP := 1
+TW_INCLUDE_RESETPROP := true
 
 #TWRP FRAMERATE
 TW_FRAMERATE := 60
@@ -179,6 +179,7 @@ TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel0-backlight/brightness"
 TW_CUSTOM_CPU_TEMP_PATH := "/sys/devices/virtual/thermal/thermal_zone26/temp"
 TW_MAX_BRIGHTNESS := 4095
 TW_DEFAULT_BRIGHTNESS := 1023
+TW_EXTRA_LANGUAGES := true
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
 TW_NO_SCREEN_BLANK := true
@@ -190,5 +191,12 @@ TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
     $(TARGET_OUT_SHARED_LIBRARIES)/android.hidl.base@1.0.so \
 RECOVERY_LIBRARY_SOURCE_FILES += \
     $(TARGET_OUT_SHARED_LIBRARIES)/libion.so
-TW_LOAD_VENDOR_MODULES := "adsp_loader_dlkm.ko apr_dlkm.ko q6_notifier_dlkm.ko q6_pdr_dlkm.ko snd_event_dlkm.ko"    
+TW_LOAD_VENDOR_MODULES := "adsp_loader_dlkm.ko apr_dlkm.ko q6_notifier_dlkm.ko q6_pdr_dlkm.ko snd_event_dlkm.ko"
 TW_BACKUP_EXCLUSIONS := /data/fonts
+
+# Custom TWRP Versioning
+ifeq ($(TW_DEVICE_VERSION),)
+TW_DEVICE_VERSION=Beta_v3
+endif
+
+
