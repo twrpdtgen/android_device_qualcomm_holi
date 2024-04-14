@@ -17,12 +17,9 @@ PRODUCT_SOONG_NAMESPACES += \
 # Release name
 PRODUCT_RELEASE_NAME := holi
 
-# Assert
-TARGET_OTA_ASSERT_DEVICE := holi
-
 # Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := holi
 PRODUCT_NAME := twrp_holi
-PRODUCT_BRAND := OnePlus
-PRODUCT_MODEL := CPH2467
-PRODUCT_MANUFACTURER := NordCE3Lite
+PRODUCT_BRAND := qualcomm
+PRODUCT_MODEL := holi
+PRODUCT_MANUFACTURER := qualcomm
